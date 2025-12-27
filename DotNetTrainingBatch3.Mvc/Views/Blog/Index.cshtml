@@ -1,0 +1,28 @@
+﻿@using DotNetTrainingBatch3.Database.Models
+@model List<TblBlog>
+<h1>Blog List</h1>
+<a href="/blog/create" class="btn btn-outline-primary">New Blog</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BlogId</td>
+                <td>@item.BlogTitle</td>
+                <td>@item.BlogAuthor</td>
+                <td>
+                    <a href="/blog/edit/@(item.BlogId)" class="btn btn-outline-success">Edit</a>
+                    <a href="/blog/delete/@(item.BlogId)" class="btn btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
