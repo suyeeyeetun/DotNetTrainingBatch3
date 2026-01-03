@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Blog List";
+}
+
+<h1>Blog List</h1>
+<a href="/blogForAjax/create" class="btn btn-outline-primary">New Blog</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody id="blogTableBody">  
+        
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready( function() {
+                loadBlogs();
+        });
+
+        function loadBlogs()
+        {
+            $.ajax({
+                url: "/BlogForAjax/List",
+                type: "GET",
+                success: function(response){
+                    let tableRows = '';
+                    response.forEach( item => {
+                        tableRows += `
+                            <tr id="blog-row-${item.blogId}">
+                                <th scope="row">${item.blogId}</th>
+                                <td>${item.blogTitle}</td>
+                                <td>${item.blogAuthor}</td>
+                                <td>
+                                    <a href="/blogForAjax/edit/${item.blogId}" class="btn btn-outline-success">Edit</a>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteBlog(${item.blogId})">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    $('#blogTableBody').html(tableRows);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+        function deleteBlog(id){
+            if(!confirm("Are you sure to delete this blog?")){
+                return;
+            }
+            $.ajax({
+                url: `/BlogForAjax/Delete/${id}`,
+                type: "POST",
+                success: function(response){
+                    alert(response.message);
+                    if(response.isSuccess){
+                        loadBlogs();
+                    };
+                },
+                error: function(xhr){
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
+}

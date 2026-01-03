@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "New Blog";
+}
+<div class="mb-3">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control" id="txtTitle">
+</div>
+<div class="mb-3">
+    <label class="form-label">Author</label>
+    <input type="text" class="form-control" id="txtAuthor">
+</div>
+<div class="mb-3">
+    <label class="form-label">Content</label>
+    <textarea class="form-control" id="txtContent" rows="3"></textarea>
+</div>
+<a href="/blogForAjax" class="btn btn-secondary">Cancel</a>
+<button type="submit" class="btn btn-primary" id="btnSave">Save</button>
+
+@section scripts{
+    <script>
+        $('#btnSave').click(function(){
+            const blogData = {
+                BlogTitle : $('#txtTitle').val(),
+                BlogAuthor : $('#txtAuthor').val(),
+                BlogContent : $('#txtContent').val()
+            };
+       
+        $.ajax({
+            url: "/blogForAjax/Save",
+            type: "POST",
+            data: blogData,
+            success: function(response){
+                alert(response.message);
+                if(response.isSuccess){
+                    window.location.href = "/blogForAjax";
+                }
+            },
+            error: function(xhr){
+                console.error(xhr.responseText);
+            }
+
+        });
+         });
+    </script>
+}
