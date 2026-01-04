@@ -15,6 +15,8 @@ namespace DotNetTrainingBatch3.Mvc.Controllers
 
         public IActionResult Index()
         {
+            ViewData["PageTitle"] = "Our Products";
+            ViewData["AvailableProducts"] = new List<string> { "Laptop", "Mouse", "Keyboard" };
             return View();
         }
 
